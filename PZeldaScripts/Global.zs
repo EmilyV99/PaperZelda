@@ -2,7 +2,19 @@ global script Init
 {
 	void run()
 	{
-		
+		for(int q = 0; q <= MAX_ITEMDATA; ++q)
+		{
+			ID[q] = Game->LoadItemData(q);
+		}
+		//Arbitrary high values
+		Game->MCounter[CR_SPIRIT_ORB] = 999;
+		Game->MCounter[CR_FORCE_GEM] = 999;
+		//Specific values
+		Game->MCounter[CR_RING_POINTS] = 200;
+		Game->MCounter[CR_LEVEL] = 100;
+		Game->MCounter[CR_FORCE_POINTS] = 200;
+		//TODO Remove this; this should begin at 0!
+		Game->MCounter[CR_FORCE_POWER] = 8;
 	}
 }
 
