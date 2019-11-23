@@ -210,7 +210,7 @@ global script ForceSlideIceExample
 		}
 	}
 	
-	void NoDirs()
+	/*void NoDirs()
 	{
 		Hero->InputUp = false;
 		Hero->InputDown = false;
@@ -220,5 +220,5 @@ global script ForceSlideIceExample
 		Hero->PressDown = false;
 		Hero->PressRight = false;
 		Hero->PressLeft = false;
-	}
+	}*/
 }

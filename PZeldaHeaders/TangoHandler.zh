@@ -3,7 +3,7 @@
 #option HEADER_GUARD on
 #option BINARY_32BIT off
 //Import the tango font file
-#include "tango/font/GUI.zh"
+#include "PZeldaHeaders/tango/font/GUI.zh"
 
 typedef const int DEFINE;
 typedef const int CONFIG;
@@ -180,14 +180,14 @@ void handleMessageSlot(int slot, bool menu4way)//start handleMessageSlot
 
 void NoDirs() //start Misc
 {
-	Link->InputUp = false;
-	Link->PressUp = false;
-	Link->InputDown = false;
-	Link->PressDown = false;
-	Link->InputLeft = false;
-	Link->PressLeft = false;
-	Link->InputRight = false;
-	Link->PressRight = false;
+	Input->Press[CB_UP] = false;
+	Input->Press[CB_DOWN] = false;
+	Input->Press[CB_LEFT] = false;
+	Input->Press[CB_RIGHT] = false;
+	Input->Button[CB_UP] = false;
+	Input->Button[CB_DOWN] = false;
+	Input->Button[CB_LEFT] = false;
+	Input->Button[CB_RIGHT] = false;
 }
 
 void ChoiceShift(int shift)

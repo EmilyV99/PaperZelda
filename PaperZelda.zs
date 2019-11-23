@@ -16,6 +16,11 @@
 #include "PZeldaScripts/Global.zs"
 #include "PZeldaScripts/Subscreen.zs"
 #include "PZeldaScripts/Misc.zs"
+#include "PZeldaScripts/Battle.zs"
+#include "PZeldaScripts/Enemies.zs"
+#include "PZeldaScripts/Equipmentrings.zs"
+#include "PZeldaScripts/Inventory.zs"
+#include "PZeldaScripts/Partners.zs"
 #include "PZeldaHeaders/customTango.zh" //Main 'tango.zh' file
 #include "PZeldaHeaders/TangoHandler.zh" //Tango handler file, for ease-of-use functions
 #include "PZeldaHeaders/LiftPotsV2.0.zs" //Lift and throw objects such as pots/rocks

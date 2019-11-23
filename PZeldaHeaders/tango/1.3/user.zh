@@ -242,7 +242,7 @@ void Tango_SaveSlotState(int slot, int output)
     __Tango_SaveSlotStateInternal(slot, output);
 }
 
-void Tango_SaveSlotState(int slot, int output, int bitmap)
+void Tango_SaveSlotState(int slot, int output, int bmp)
 {
     if(!__Tango_SaveSlotStateInternal(slot, output))
         // Error
@@ -254,7 +254,7 @@ void Tango_SaveSlotState(int slot, int output, int bitmap)
     int width=__Tango_SlotDefs[defStart+__TSDEF_WIDTH];
     int height=__Tango_SlotDefs[defStart+__TSDEF_HEIGHT];
     
-    Screen->SetRenderTarget(bitmap);
+    Screen->SetRenderTarget(bmp);
     Screen->DrawBitmap(0, __TANGO_BITMAP, x, y, width, height,
       x, y, width, height, 0, false);
     Screen->SetRenderTarget(RT_SCREEN);
@@ -288,7 +288,7 @@ void Tango_RestoreSlotState(int slot, int oldState)
     __Tango_RestoreSlotStateInternal(slot, oldState);
 }
 
-void Tango_RestoreSlotState(int slot, int oldState, int bitmap)
+void Tango_RestoreSlotState(int slot, int oldState, int bmp)
 {
     if(!__Tango_RestoreSlotStateInternal(slot, oldState))
         // Error
@@ -301,7 +301,7 @@ void Tango_RestoreSlotState(int slot, int oldState, int bitmap)
     int height=__Tango_SlotDefs[defStart+__TSDEF_HEIGHT];
     
     Screen->SetRenderTarget(__TANGO_BITMAP);
-    Screen->DrawBitmap(0, bitmap, x, y, width, height,
+    Screen->DrawBitmap(0, bmp, x, y, width, height,
       x, y, width, height, 0, false);
     Screen->SetRenderTarget(RT_SCREEN);
 }
