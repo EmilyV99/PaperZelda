@@ -4,7 +4,10 @@ enum Color
 {
 	C_TRANS = 0x00,
 	C_WHITE = 0x01,
-	C_BLACK = 0x0F
+	C_BLACK = 0x0F,
+	C_LINK_GREEN = 0x94,
+	C_TAN_LIGHT = 0x9D,
+	C_TAN_DARK = 0x9E
 };
 typedef const Color COLOR;
 

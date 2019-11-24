@@ -11,10 +11,17 @@ global script Init
 		Game->MCounter[CR_FORCE_GEM] = 999;
 		//Specific values
 		Game->MCounter[CR_RING_POINTS] = 200;
-		Game->MCounter[CR_LEVEL] = 100;
 		Game->MCounter[CR_FORCE_POINTS] = 200;
-		//TODO Remove this; this should begin at 0!
+		Game->MCounter[CR_LEVEL] = 99;
+		Game->Counter[CR_LEVEL] = 1;
+		Game->MCounter[CR_LIFE] = 5;
+		Game->MCounter[CR_MAGIC] = 5;
+		Game->Counter[CR_LIFE] = Game->MCounter[CR_LIFE];
+		Game->Counter[CR_MAGIC] = Game->MCounter[CR_MAGIC];
+		//start TODO Remove this; this should begin at 0!
 		Game->MCounter[CR_FORCE_POWER] = 8;
+		Game->Counter[CR_FORCE_POWER] = 7;
+		//end
 	}
 }
 
@@ -66,6 +73,7 @@ global script onLaunch
 	void run()
 	{
 		bitmaps::refresh_pointers();
+		if(Game->Counter[CR_LIFE]>Game->MCounter[CR_LIFE]) Game->Counter[CR_LIFE] = Game->MCounter[CR_LIFE];
 	}
 }
 
