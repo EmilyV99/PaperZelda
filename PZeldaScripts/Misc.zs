@@ -26,7 +26,7 @@ int set_bit(int num, int bit, bool state)
 	return num;
 }
 
-namespace PlayTime
+namespace PlayTime //start
 {
 	DEFINE TIME_FRAME = 0.0001;
 	DEFINE FRAME_PER_SECOND = 60;
@@ -68,4 +68,153 @@ namespace PlayTime
 		unless(Game->TimeValid) return -1;
 		return ((Game->Time) / FRAME_PER_SECOND) * 10000;
 	}
+} //end PlayTime
+
+namespace Debug
+{
+	typedef untyped u;
+	//start Error Logging
+	void err(char buf, u a1, u a2, u a3, u a4, u a5, u a6, u a7, u a8, u a9, u aA, u aB, u aC, u aD, u aE, u aF)
+	{
+		if(DEBUG_LOGGING)
+		{
+			char temp[512];
+			sprintf(temp, "[ERROR] %s\n", buf);
+			printf(temp, a1, a2, a3, a4, a5, a6, a7, a8, a9, aA, aB, aC, aD, aE, aF);
+		}
+	}
+	void err(char buf, u a1, u a2, u a3, u a4, u a5, u a6, u a7, u a8, u a9, u aA, u aB, u aC, u aD, u aE)
+	{
+		if(DEBUG_LOGGING)
+		{
+			char temp[512];
+			sprintf(temp, "[ERROR] %s\n", buf);
+			printf(temp, a1, a2, a3, a4, a5, a6, a7, a8, a9, aA, aB, aC, aD, aE);
+		}
+	}
+	void err(char buf, u a1, u a2, u a3, u a4, u a5, u a6, u a7, u a8, u a9, u aA, u aB, u aC, u aD)
+	{
+		if(DEBUG_LOGGING)
+		{
+			char temp[512];
+			sprintf(temp, "[ERROR] %s\n", buf);
+			printf(temp, a1, a2, a3, a4, a5, a6, a7, a8, a9, aA, aB, aC, aD);
+		}
+	}
+	void err(char buf, u a1, u a2, u a3, u a4, u a5, u a6, u a7, u a8, u a9, u aA, u aB, u aC)
+	{
+		if(DEBUG_LOGGING)
+		{
+			char temp[512];
+			sprintf(temp, "[ERROR] %s\n", buf);
+			printf(temp, a1, a2, a3, a4, a5, a6, a7, a8, a9, aA, aB, aC);
+		}
+	}
+	void err(char buf, u a1, u a2, u a3, u a4, u a5, u a6, u a7, u a8, u a9, u aA, u aB)
+	{
+		if(DEBUG_LOGGING)
+		{
+			char temp[512];
+			sprintf(temp, "[ERROR] %s\n", buf);
+			printf(temp, a1, a2, a3, a4, a5, a6, a7, a8, a9, aA, aB);
+		}
+	}
+	void err(char buf, u a1, u a2, u a3, u a4, u a5, u a6, u a7, u a8, u a9, u aA)
+	{
+		if(DEBUG_LOGGING)
+		{
+			char temp[512];
+			sprintf(temp, "[ERROR] %s\n", buf);
+			printf(temp, a1, a2, a3, a4, a5, a6, a7, a8, a9, aA);
+		}
+	}
+	void err(char buf, u a1, u a2, u a3, u a4, u a5, u a6, u a7, u a8, u a9)
+	{
+		if(DEBUG_LOGGING)
+		{
+			char temp[512];
+			sprintf(temp, "[ERROR] %s\n", buf);
+			printf(temp, a1, a2, a3, a4, a5, a6, a7, a8, a9);
+		}
+	}
+	void err(char buf, u a1, u a2, u a3, u a4, u a5, u a6, u a7, u a8)
+	{
+		if(DEBUG_LOGGING)
+		{
+			char temp[512];
+			sprintf(temp, "[ERROR] %s\n", buf);
+			printf(temp, a1, a2, a3, a4, a5, a6, a7, a8);
+		}
+	}
+	void err(char buf, u a1, u a2, u a3, u a4, u a5, u a6, u a7)
+	{
+		if(DEBUG_LOGGING)
+		{
+			char temp[512];
+			sprintf(temp, "[ERROR] %s\n", buf);
+			printf(temp, a1, a2, a3, a4, a5, a6, a7);
+		}
+	}
+	void err(char buf, u a1, u a2, u a3, u a4, u a5, u a6)
+	{
+		if(DEBUG_LOGGING)
+		{
+			char temp[512];
+			sprintf(temp, "[ERROR] %s\n", buf);
+			printf(temp, a1, a2, a3, a4, a5, a6);
+		}
+	}
+	void err(char buf, u a1, u a2, u a3, u a4, u a5)
+	{
+		if(DEBUG_LOGGING)
+		{
+			char temp[512];
+			sprintf(temp, "[ERROR] %s\n", buf);
+			printf(temp, a1, a2, a3, a4, a5);
+		}
+	}
+	void err(char buf, u a1, u a2, u a3, u a4)
+	{
+		if(DEBUG_LOGGING)
+		{
+			char temp[512];
+			sprintf(temp, "[ERROR] %s\n", buf);
+			printf(temp, a1, a2, a3, a4);
+		}
+	}
+	void err(char buf, u a1, u a2, u a3)
+	{
+		if(DEBUG_LOGGING)
+		{
+			char temp[512];
+			sprintf(temp, "[ERROR] %s\n", buf);
+			printf(temp, a1, a2, a3);
+		}
+	}
+	void err(char buf, u a1, u a2)
+	{
+		if(DEBUG_LOGGING)
+		{
+			char temp[512];
+			sprintf(temp, "[ERROR] %s\n", buf);
+			printf(temp, a1, a2);
+		}
+	}
+	void err(char buf, u a1)
+	{
+		if(DEBUG_LOGGING)
+		{
+			char temp[512];
+			sprintf(temp, "[ERROR] %s\n", buf);
+			printf(temp, a1);
+		}
+	}
+	void err(char buf)
+	{
+		if(DEBUG_LOGGING)
+		{
+			printf("[ERROR] %s\n", buf);
+		}
+	}
+	//end Error Logging
 }

@@ -1,4 +1,7 @@
 
+//Settings
+CONFIGB DEBUG_LOGGING = true;
+
 //Colors
 enum Color
 {
