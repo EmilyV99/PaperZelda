@@ -10,7 +10,6 @@ global script Init
 		Game->MCounter[CR_SPIRIT_ORB] = 999;
 		Game->MCounter[CR_FORCE_GEM] = 999;
 		//Specific values
-		Game->MCounter[CR_RING_POINTS] = 200;
 		Game->MCounter[CR_FORCE_POINTS] = 200;
 		Game->MCounter[CR_LEVEL] = 99;
 		Game->Counter[CR_LEVEL] = 1;
@@ -21,7 +20,18 @@ global script Init
 		//start TODO Remove this; this should begin at 0!
 		Game->MCounter[CR_FORCE_POWER] = 8;
 		Game->Counter[CR_FORCE_POWER] = 7;
+		Game->MCounter[CR_RING_POINTS] = 100;
+		Game->Counter[CR_RING_POINTS] = 100;
 		//end
+		//TODO REMOVE TESTS
+		for(int q = 0; q < Ring::NUM_RINGS; ++q)
+		{
+			if(Ring::tile(<Ring>q) != Ring::RING_NULL_TILE)
+			{
+				ringinv[q] = 5;
+			}
+		}
+		//
 	}
 }
 

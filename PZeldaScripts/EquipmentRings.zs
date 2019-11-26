@@ -78,6 +78,7 @@ namespace Ring //start
 		NUM_RINGS
 	}; //end
 	CONFIGB RING_DEBUG = false;
+	CONFIG RING_NULL_TILE = 202808;
 	void name(char buf, Ring r) //start
 	{
 		switch(r)
@@ -85,7 +86,48 @@ namespace Ring //start
 			case RED_RING:
 				strcpy(buf, "Red Ring");
 				return;
-			//TODO fill out rings
+			case RED_RING_P:
+				strcpy(buf, "Red Ring (P)");
+				return;
+			case BLUE_RING:
+				strcpy(buf, "Blue Ring");
+				return;
+			case BLUE_RING_P:
+				strcpy(buf, "Blue Ring (P)");
+				return;
+			case GREEN_RING:
+				strcpy(buf, "Green Ring");
+				return;
+			case GREEN_RING_P:
+				strcpy(buf, "Green Ring (P)");
+				return;
+			case SWORD_RING:
+				strcpy(buf, "Sword Ring");
+				return;
+			case BOW_RING:
+				strcpy(buf, "Bow Ring");
+				return;
+			case PERIL_RING:
+				strcpy(buf, "Peril Ring");
+				return;
+			case PERIL_RING_P:
+				strcpy(buf, "Peril Ring (P)");
+				return;
+			case ARMOR_RING:
+				strcpy(buf, "Armor Ring");
+				return;
+			case ARMOR_RING_P: 
+				strcpy(buf, "Armor Ring (P)");
+				return;
+			case POWER_RING:
+				strcpy(buf, "Power Ring");
+				return;
+			case POWER_RING_P:
+				strcpy(buf, "Power Ring (P)");
+				return;
+			case CURSED_RING:
+				strcpy(buf, "Cursed Ring");
+				return;
 			default:
 				if(RING_DEBUG) Debug::err("Ring %d has no valid name!",r);
 				sprintf(buf, "RING_%d", r);
@@ -130,19 +172,154 @@ namespace Ring //start
 			//TODO fill out rings
 			default:
 				if(RING_DEBUG) Debug::err("Ring %d has no valid tile!",r);
-				return NULL;
+				return RING_NULL_TILE;
 		}
 	} //end
-	int cost(Ring r) //start
+	int cost(Ring r) //start	
 	{
 		switch(r)
 		{
 			case RED_RING:
 				return 6;
+			case RED_RING_P:
+				return 6;
+			case BLUE_RING:
+				return 5;
+			case BLUE_RING_P:
+				return 5;
+			case GREEN_RING:
+				return 4;
+			case GREEN_RING_P:
+				return 4;
+			case SWORD_RING:
+				return 2;
+			case BOW_RING:
+				return 2;
+			case PERIL_RING:
+				return 2;
+			case PERIL_RING_P:
+				return 2;
+			case ARMOR_RING:
+				return 2;
+			case ARMOR_RING_P: 
+				return 2;
+			case POWER_RING:
+				return 2;
+			case POWER_RING_P:
+				return 2;
+			case CURSED_RING:
+				return 4;
 			//TODO fill out rings
 			default:
 				if(RING_DEBUG) Debug::err("Ring %d has no valid cost!",r);
 				return NULL;
+		}
+	} //end
+	enum SortType
+	{
+		SORTTYPE_ID,
+		SORTTYPE_RP,
+		NUM_SORTTYPE
+	};
+	void loadRingArray(untyped buf, SortType sort, bool ascending, bool equippedOnly) //start
+	{
+		memset(buf, -1, SizeOfArray(buf));
+		int ind = 0;
+		switch(sort)
+		{
+			case SORTTYPE_ID:
+				if(ascending)
+				{
+					for(int q = 0; q < NUM_RINGS; ++q)
+					{
+						unless(ringinv[q]) continue;
+						if(equippedOnly && !rings[q]) continue;
+						buf[ind++] = q;
+					}
+				}
+				else
+				{
+					for(int q = NUM_RINGS-1; q >= 0; --q)
+					{
+						unless(ringinv[q]) continue;
+						if(equippedOnly && !rings[q]) continue;
+						buf[ind++] = q;
+					}
+				}
+				break;
+			case SORTTYPE_RP:
+				int rporder[NUM_RINGS];
+				getRPOrder(rporder, ascending);
+				for(int q = 0; q < NUM_RINGS; ++q)
+				{
+					int r = rporder[q];
+					unless(ringinv[r]) continue;
+					if(equippedOnly && !rings[r]) continue;
+					buf[ind++] = r;
+				}
+				break;
+		}
+		buf[ind] = -1;
+	} //end
+	
+	void getRPOrder(untyped buf, bool ascending) //start
+	{
+		int ind = 0;
+		for(int q = 0; q < NUM_RINGS; ++q)
+		{
+			int c = cost(<Ring>q);
+			if(ind==0)
+				buf[ind++] = q;
+			else if(ind==1)
+			{
+				if(c < cost(buf[0]))
+				{
+					buf[1] = buf[0];
+					buf[0] = q;
+				}
+				else
+				{
+					buf[1] = q;
+				}
+				++ind;
+			}
+			else
+			{
+				if(c < cost(buf[0]))
+				{
+					memmove(buf, 1, buf, 0, ind);
+					buf[0] = q;
+					++ind;
+				}
+				else
+				{
+					for(int f = 1; f < ind; ++f)
+					{
+						if(c >= cost(buf[f-1]) && c < cost(buf[f]))
+						{
+							memmove(buf, f+1, buf, f, NUM_RINGS-f-1);
+							buf[f] = q;
+							++ind;
+							break;
+						}
+						else if(f==ind-1)
+						{
+							buf[ind++] = q;
+							break;
+						}
+					}
+				}
+			}
+		}
+		unless(ascending)
+		{
+			int foo[NUM_RINGS];
+			memcpy(foo, buf, NUM_RINGS);
+			int ind;
+			for(int q = (NUM_RINGS-1); q >= 0; --q)
+			{
+				buf[ind++] = foo[q];
+			}
 		}
 	} //end
 } //end
