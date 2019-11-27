@@ -8,6 +8,18 @@ void TotalNoAction()
 	}
 }
 
+enum BitNum
+{
+	FLAG_1, FLAG_2, FLAG_3, FLAG_4,
+	FLAG_5, FLAG_6, FLAG_7, FLAG_8,
+	FLAG_9, FLAG_10, FLAG_11, FLAG_12,
+	FLAG_13, FLAG_14, FLAG_15, FLAG_16,
+	FLAG_17, FLAG_18, FLAG_19, FLAG_20,
+	FLAG_21, FLAG_22, FLAG_23, FLAG_24,
+	FLAG_25, FLAG_26, FLAG_27, FLAG_28,
+	FLAG_29, FLAG_30, FLAG_31, FLAG_32
+};
+
 //32-bit binary accessor
 bool get_bit(int num, int bit)
 {
