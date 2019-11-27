@@ -39,6 +39,16 @@ typedef const bool CONFIGB;
 typedef char32 char;
 
 itemdata ID[MAX_ITEMDATA+1]; //Used for quicker itemdata access
+int ProgressMarkers[MAX_INT];
+namespace Progress
+{
+	enum ProgressMarker
+	{
+		KNOWS_SPIRITORBS,
+		VASU
+	};
+}
+typedef Progress::ProgressMarker ProgressMarker;
 
 //Constant names to match the module data
 DEFINE IC_CUSTOMREFILL = IC_CUSTOM1;
