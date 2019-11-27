@@ -587,9 +587,11 @@ namespace Venrob
 	 * New params:
 	 *	'verticalSpacing' is the extra space to include between lines.
 	 *	'MaxWidth' is the width at which text will be forced onto the next line.
+	 * returns number of lines used
 	 */
-	void DrawStrings(int layer, int x, int y, int font, int color, int background_color, int format, char32 ptr, int opacity, int verticalSpacing, int MaxWidth)
+	int DrawStrings(int layer, int x, int y, int font, int color, int background_color, int format, char32 ptr, int opacity, int verticalSpacing, int MaxWidth)
 	{
+		int linecount;
 		int cpyptr[2048];
 		strcpy(cpyptr,ptr);
 		int fontHeight = Text->FontHeight(font);
@@ -619,11 +621,13 @@ namespace Venrob
 			if(pos==-1) //No newline
 			{
 				Screen->DrawString(layer, x, y, font, color, background_color, format, cpyptr, opacity);
-				return;
+				++linecount;
+				return linecount;
 			}
 			int buf[256];
 			memcpy(buf, 0, cpyptr, 0, pos); //Copy first string
 			Screen->DrawString(layer, x, y, font, color, background_color, format, buf, opacity);
+			++linecount;
 			remnchr(cpyptr, 0, pos+1); //Shift back the string, deleting what was already drawn
 			y+=fontHeight+verticalSpacing;
 		}
@@ -637,9 +641,11 @@ namespace Venrob
 	 *  'b' is the bitmap to render to.
 	 *	'verticalSpacing' is the extra space to include between lines.
 	 *	'MaxWidth' is the width at which text will be forced onto the next line.
+	 * returns number of lines used
 	 */
-	void DrawStringsBitmap(bitmap b, int layer, int x, int y, int font, int color, int background_color, int format, char32 ptr, int opacity, int verticalSpacing, int MaxWidth)
+	int DrawStringsBitmap(bitmap b, int layer, int x, int y, int font, int color, int background_color, int format, char32 ptr, int opacity, int verticalSpacing, int MaxWidth)
 	{
+		int linecount;
 		int cpyptr[2048];
 		strcpy(cpyptr,ptr);
 		int fontHeight = Text->FontHeight(font);
@@ -669,11 +675,13 @@ namespace Venrob
 			if(pos==-1) //No newline
 			{
 				b->DrawString(layer, x, y, font, color, background_color, format, cpyptr, opacity);
-				return;
+				++linecount;
+				return linecount;
 			}
 			int buf[256];
 			memcpy(buf, 0, cpyptr, 0, pos); //Copy first string
 			b->DrawString(layer, x, y, font, color, background_color, format, buf, opacity);
+			++linecount;
 			remnchr(cpyptr, 0, pos+1); //Shift back the string, deleting what was already drawn
 			y+=fontHeight+verticalSpacing;
 		}
