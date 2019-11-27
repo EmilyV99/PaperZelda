@@ -33,7 +33,6 @@ dmapdata script ActiveSubscreen
 	CONFIG MENU_SMALLFONT = FONT_Z3SMALL;//FONT_MARIOLAND;
 	CONFIG MENU_SMALLFONT_HEIGHT = FONT_Z3SMALL_HEIGHT;//FONT_MARIOLAND_HEIGHT;
 	//
-	CONFIGB DEBUG_OUTPUT_BG_BITMAP = false;
 	CONFIGB DEBUG_MOUSE_STUFF = true;
 	// Tiles / Combos
 	CONFIG SBG_TILE_TAB_START = 211640;
@@ -51,6 +50,18 @@ dmapdata script ActiveSubscreen
 	DEFINE SBG_BOX_BORDER_PX = 2;
 	COLOR SBG_BOX_CDARK = C_TAN_DARK;
 	COLOR SBG_BOX_CLIGHT = C_TAN_LIGHT;
+	//
+	CONFIG DESCBOX_X = 13;
+	CONFIG DESCBOX_Y = 184;
+	CONFIG DESCBOX_W = 225;
+	CONFIG DESCBOX_H = 33;
+	COLOR DESCBOX_L = C_WHITE;
+	COLOR DESCBOX_D = C_G1;
+	CONFIG DESCBOX_TEXT_PADDING = 8;
+	CONFIG DESCBOX_FONT = FONT_MATRIX;
+	CONFIG DESCBOX_LINE_SPACING = 4;
+	CONFIG DESCBOX_VISIBLE_LINES = 2;
+	CONFIG DESCBOX_ADVANCE_TILE = 211776;
 	//end General Constants
 	//start Link Tab Constants
 	CONFIG LINK_SMALLFONT = FONT_MARIOLAND;
@@ -169,13 +180,15 @@ dmapdata script ActiveSubscreen
 		{
 			background_bmp->DrawTile(0,(q*SCREENWID)+SBG_X,SBG_Y,SBG_TILE_TAB_START+(q*TILE_PER_PAGE),SBG_TWID,SBG_THEI,0,-1,-1,0,0,0,FLIP_NONE,true,OP_OPAQUE);
 		}
-		if(DEBUG_OUTPUT_BG_BITMAP) background_bmp->Write(7, "PZ_BG.png", true);
 		bitmap subbmp = bitmaps::acquire(SCREENWID,SCREENHEI);
 		int fade_timer = FADETIME;
 		TotalNoAction();
 		int cursor_index;
 		int oldCursor[10];
 		int oldCursorIndex = 0;
+		char descBuf[4096];
+		int descScroll;
+		int desc_tile;
 		//Ring specific
 		untyped ringbuf[Ring::NUM_RINGS];
 		Ring::SortType ringsort = Ring::SORTTYPE_ID;
@@ -195,7 +208,7 @@ dmapdata script ActiveSubscreen
 		//end Mouse system stuff
 		//start Cursor positions
 		// {x1, y1, x2, y2} //etc
-		int LinkTabPos[] = {12, 44};
+		int LinkTabPos[] = {12, 44, 21, 61, 127, 67, 127, 81, 19, 134, 19, 152, 19, 168, 127, 106, 127, 122, 127, 136, 127, 150, 127, 167};
 		int PartyTabPos[] = {45, 44};
 		int GearTabPos[] = {80, 44};
 		int InvTabPos[] = {114, 44};
@@ -246,6 +259,186 @@ dmapdata script ActiveSubscreen
 			{
 				case TAB_LINK: //start
 				{
+					enum LinkCursorIndex //start
+					{
+						INDX_TITLE,
+						INDX_LEVEL,
+						INDX_FORCEPOWER,
+						INDX_SPECIAL,
+						INDX_HP,
+						INDX_MP,
+						INDX_RP,
+						INDX_FORCEPOINTS,
+						INDX_RUPEES,
+						INDX_FORCEGEMS,
+						INDX_SPIRITORBS,
+						INDX_PLAYTIME
+					}; //end
+					int o_cindex = cursor_index;
+					switch(cursor_index) //start
+					{
+						case INDX_TITLE:
+							if(Input->Press[CB_A])
+								cursor_index = INDX_LEVEL;
+							break;
+						case INDX_LEVEL:
+							if(Input->Press[CB_B])
+								cursor_index = INDX_TITLE;
+							else if(Input->Press[CB_RIGHT] || Input->Press[CB_LEFT])
+								cursor_index = INDX_FORCEPOWER;
+							else if(Input->Press[CB_DOWN])
+								cursor_index = INDX_HP;
+							else if(Input->Press[CB_UP])
+								cursor_index = INDX_RP;
+							break;
+						case INDX_HP:
+							if(Input->Press[CB_B])
+								cursor_index = INDX_TITLE;
+							else if(Input->Press[CB_RIGHT] || Input->Press[CB_LEFT])
+								cursor_index = INDX_FORCEGEMS;
+							else if(Input->Press[CB_DOWN])
+								cursor_index = INDX_MP;
+							else if(Input->Press[CB_UP])
+								cursor_index = INDX_LEVEL;
+							break;
+						case INDX_MP:
+							if(Input->Press[CB_B])
+								cursor_index = INDX_TITLE;
+							else if(Input->Press[CB_RIGHT] || Input->Press[CB_LEFT])
+								cursor_index = INDX_SPIRITORBS;
+							else if(Input->Press[CB_DOWN])
+								cursor_index = INDX_RP;
+							else if(Input->Press[CB_UP])
+								cursor_index = INDX_HP;
+							break;
+						case INDX_RP:
+							if(Input->Press[CB_B])
+								cursor_index = INDX_TITLE;
+							else if(Input->Press[CB_RIGHT] || Input->Press[CB_LEFT])
+								cursor_index = INDX_PLAYTIME;
+							else if(Input->Press[CB_DOWN])
+								cursor_index = INDX_LEVEL;
+							else if(Input->Press[CB_UP])
+								cursor_index = INDX_MP;
+							break;
+						case INDX_FORCEPOWER:
+							if(Input->Press[CB_B])
+								cursor_index = INDX_TITLE;
+							else if(Input->Press[CB_RIGHT] || Input->Press[CB_LEFT])
+								cursor_index = INDX_LEVEL;
+							else if(Input->Press[CB_DOWN])
+								cursor_index = INDX_SPECIAL;
+							else if(Input->Press[CB_UP])
+								cursor_index = INDX_PLAYTIME;
+							break;
+						case INDX_SPECIAL:
+							if(Input->Press[CB_B])
+								cursor_index = INDX_TITLE;
+							else if(Input->Press[CB_RIGHT] || Input->Press[CB_LEFT])
+								cursor_index = INDX_LEVEL;
+							else if(Input->Press[CB_DOWN])
+								cursor_index = INDX_FORCEPOINTS;
+							else if(Input->Press[CB_UP])
+								cursor_index = INDX_FORCEPOWER;
+							break;
+						case INDX_FORCEPOINTS:
+							if(Input->Press[CB_B])
+								cursor_index = INDX_TITLE;
+							else if(Input->Press[CB_RIGHT] || Input->Press[CB_LEFT])
+								cursor_index = INDX_HP;
+							else if(Input->Press[CB_DOWN])
+								cursor_index = INDX_RUPEES;
+							else if(Input->Press[CB_UP])
+								cursor_index = INDX_SPECIAL;
+							break;
+						case INDX_RUPEES:
+							if(Input->Press[CB_B])
+								cursor_index = INDX_TITLE;
+							else if(Input->Press[CB_RIGHT] || Input->Press[CB_LEFT])
+								cursor_index = INDX_HP;
+							else if(Input->Press[CB_DOWN])
+								cursor_index = INDX_FORCEGEMS;
+							else if(Input->Press[CB_UP])
+								cursor_index = INDX_FORCEPOINTS;
+							break;
+						case INDX_FORCEGEMS:
+							if(Input->Press[CB_B])
+								cursor_index = INDX_TITLE;
+							else if(Input->Press[CB_RIGHT] || Input->Press[CB_LEFT])
+								cursor_index = INDX_HP;
+							else if(Input->Press[CB_DOWN])
+								cursor_index = INDX_SPIRITORBS;
+							else if(Input->Press[CB_UP])
+								cursor_index = INDX_RUPEES;
+							break;
+						case INDX_SPIRITORBS:
+							if(Input->Press[CB_B])
+								cursor_index = INDX_TITLE;
+							else if(Input->Press[CB_RIGHT] || Input->Press[CB_LEFT])
+								cursor_index = INDX_MP;
+							else if(Input->Press[CB_DOWN])
+								cursor_index = INDX_PLAYTIME;
+							else if(Input->Press[CB_UP])
+								cursor_index = INDX_FORCEGEMS;
+							break;
+						case INDX_PLAYTIME:
+							if(Input->Press[CB_B])
+								cursor_index = INDX_TITLE;
+							else if(Input->Press[CB_RIGHT] || Input->Press[CB_LEFT])
+								cursor_index = INDX_RP;
+							else if(Input->Press[CB_DOWN])
+								cursor_index = INDX_FORCEPOWER;
+							else if(Input->Press[CB_UP])
+								cursor_index = INDX_SPIRITORBS;
+							break;
+					} //end
+					if(cursor_index != o_cindex)
+					{
+						descScroll = 0;
+						remchr(descBuf, 0);
+						desc_tile = 0;
+						switch(cursor_index) //start
+						{
+							case INDX_LEVEL:
+								strcpy(descBuf, "Link's current Level");
+								break;
+							case INDX_HP:
+								strcpy(descBuf, "Link's HP. If this drops to 0, it's Game Over.");
+								break;
+							case INDX_MP:
+								strcpy(descBuf, "Party's MP. This is spent to use abilities during battle.");
+								break;
+							case INDX_RP:
+								strcpy(descBuf, "Party's RP. This represents the limit of Rings you can wear.");
+								break;
+							case INDX_FORCEPOWER:
+								strcpy(descBuf, "Force Power. This is spent to use Special Moves.");
+								break;
+							case INDX_SPECIAL:
+								strcpy(descBuf, "(WIP) Press A to view your special moves.");
+								break;
+							case INDX_FORCEPOINTS:
+								strcpy(descBuf, "Force Points. Collect 100 to level up.");
+								break;
+							case INDX_RUPEES:
+								strcpy(descBuf, "Money.");
+								break;
+							case INDX_FORCEGEMS:
+								if(get_bit(ProgressMarkers[Progress::VASU], FLAG_1)) //Has talked to Vasu before
+									strcpy(descBuf, "Force Gems. You can buy Rings from Vasu with these.");
+								else strcpy(descBuf, "Force Gems. They don't seem of much use, but perhaps they have value to a collector...");
+								break;
+							case INDX_SPIRITORBS:
+								if(ProgressMarkers[Progress::KNOWS_SPIRITORBS])
+									strcpy(descBuf, "Spirit Orbs. You can spend 3 of these to level up a partner.");
+								else strcpy(descBuf, "Spirit Orbs. They seem to emit a strange power...");
+								break;
+							case INDX_PLAYTIME:
+								strcpy(descBuf, "Current Play Time\nHH:MM:SS");
+								break;
+						} //end
+					}
+					descScroll = DrawDescription(subbmp, descBuf, descScroll, desc_tile);
 					DrawMenuCursor(subbmp, LinkTabPos[cursor_index*2], LinkTabPos[(cursor_index*2)+1]);
 					DEFINE TEXT_YOFF = 3;
 					//start Upper-right box
@@ -350,43 +543,103 @@ dmapdata script ActiveSubscreen
 					digit = 0;
 					subbmp->FastTile(1, BX_STATS + 4, BY_STATS + yoff + TEXT_YOFF, TILE_TEXT_RP, 0, OP_OPAQUE);
 					subbmp->FastTile(1, BX_STATS + 4+18, BY_STATS + yoff, TILE_RING, 0, OP_OPAQUE);
-					digit += DrawNumber(subbmp, (BX_STATS+4+18+20)+((NUMBERTILE_WID+NUMBERTILE_SPACING)*digit), BY_STATS + yoff + TEXT_YOFF, Game->Counter[CR_RING_POINTS], 1, true);
+					digit += DrawNumber(subbmp, (BX_STATS+4+18+20)+((NUMBERTILE_WID+NUMBERTILE_SPACING)*digit), BY_STATS + yoff + TEXT_YOFF, Game->MCounter[CR_RING_POINTS], 1, true);
 					//end StatBox
 					break;
 				} //end
 				case TAB_PARTY: //start
 				{
+					int o_cindex = cursor_index;
+					switch(cursor_index) //start
+					{
+						case 0:
+							break;
+					} //end
+					if(cursor_index != o_cindex)
+					{
+						descScroll = 0;
+						remchr(descBuf, 0);
+						desc_tile = 0;
+						
+					}
+					descScroll = DrawDescription(subbmp, descBuf, descScroll, desc_tile);
 					DrawMenuCursor(subbmp, PartyTabPos[cursor_index*2], PartyTabPos[(cursor_index*2)+1]);
 					//TODO Per-frame draws for this tab
 					break;
 				} //end
 				case TAB_GEAR: //start
 				{
+					int o_cindex = cursor_index;
+					switch(cursor_index) //start
+					{
+						case 0:
+							break;
+					} //end
+					if(cursor_index != o_cindex)
+					{
+						descScroll = 0;
+						remchr(descBuf, 0);
+						desc_tile = 0;
+						
+					}
+					descScroll = DrawDescription(subbmp, descBuf, descScroll, desc_tile);
 					DrawMenuCursor(subbmp, GearTabPos[cursor_index*2], GearTabPos[(cursor_index*2)+1]);
 					//TODO Per-frame draws for this tab
 					break;
 				} //end
 				case TAB_INVENTORY: //start
 				{
+					int o_cindex = cursor_index;
+					switch(cursor_index) //start
+					{
+						case 0:
+							break;
+					} //end
+					if(cursor_index != o_cindex)
+					{
+						descScroll = 0;
+						remchr(descBuf, 0);
+						desc_tile = 0;
+						
+					}
+					descScroll = DrawDescription(subbmp, descBuf, descScroll, desc_tile);
 					DrawMenuCursor(subbmp, InvTabPos[cursor_index*2], InvTabPos[(cursor_index*2)+1]);
 					//TODO Per-frame draws for this tab
 					break;
 				} //end
 				case TAB_RINGS: //start
 				{
-					int selected_ring_indx = (cursor_index > 3 ? (ring_page*RINGS_PER_PAGE) + (cursor_index-4) : -1);
-					Ring selected_ring = <Ring>(selected_ring_indx < 0 ? -1 : ringbuf[selected_ring_indx]);
-					switch(cursor_index)
+					enum RingCursorIndex //start
 					{
-						case 0:
+						INDX_TITLE,
+						INDX_EQUIPPED,
+						INDX_ASCENDING,
+						INDX_SORT,
+						INDX_RING1,
+						INDX_RING2,
+						INDX_RING3,
+						INDX_RING4,
+						INDX_RING5,
+						INDX_RING6,
+						INDX_RING7
+					}; //end
+					int o_cindex = cursor_index;
+					int o_ring_page = ring_page;
+					int selected_ring_indx = (cursor_index > 3 ? (ring_page*RINGS_PER_PAGE) + (cursor_index-4) : -1);
+					bool update;
+					Ring selected_ring = <Ring>(selected_ring_indx < 0 ? -1 : ringbuf[selected_ring_indx]);
+					switch(cursor_index) //start
+					{
+						case INDX_TITLE:
 							if(Input->Press[CB_A])
-								cursor_index=1;
+								cursor_index=INDX_EQUIPPED;
 							break;
-						case 1:
+						case INDX_EQUIPPED:
 							if(Input->Press[CB_B])
-								cursor_index=0;
+								cursor_index=INDX_TITLE;
 							else if(Input->Press[CB_A])
 							{
+								update = true;
 								ring_eq_only = !ring_eq_only;
 								Ring::loadRingArray(ringbuf, ringsort, ringascending, ring_eq_only);
 								for(num_rings_owned = 0; ringbuf[num_rings_owned] != -1; ++num_rings_owned);
@@ -396,18 +649,19 @@ dmapdata script ActiveSubscreen
 							else if(Input->Press[CB_RIGHT])
 							{
 								oldCursor[oldCursorIndex++] = cursor_index;
-								cursor_index = 4;
+								cursor_index = INDX_RING1;
 							}
 							else if(Input->Press[CB_UP])
-								cursor_index = 3;
+								cursor_index = INDX_SORT;
 							else if(Input->Press[CB_DOWN])
-								cursor_index = 2;
+								cursor_index = INDX_ASCENDING;
 							break;
-						case 2:
+						case INDX_ASCENDING:
 							if(Input->Press[CB_B])
-								cursor_index = 0;
+								cursor_index = INDX_TITLE;
 							else if(Input->Press[CB_A])
 							{
+								update = true;
 								ringascending = !ringascending;								
 								Ring::loadRingArray(ringbuf, ringsort, ringascending, ring_eq_only);
 								for(num_rings_owned = 0; ringbuf[num_rings_owned] != -1; ++num_rings_owned);
@@ -417,18 +671,19 @@ dmapdata script ActiveSubscreen
 							else if(Input->Press[CB_RIGHT])
 							{
 								oldCursor[oldCursorIndex++] = cursor_index;
-								cursor_index = 4;
+								cursor_index = INDX_RING1;
 							}
 							else if(Input->Press[CB_UP])
-								cursor_index = 1;
+								cursor_index = INDX_EQUIPPED;
 							else if(Input->Press[CB_DOWN])
-								cursor_index = 3;
+								cursor_index = INDX_SORT;
 							break;
-						case 3:
+						case INDX_SORT:
 							if(Input->Press[CB_B])
-								cursor_index = 0;
+								cursor_index = INDX_TITLE;
 							else if(Input->Press[CB_A])
 							{
+								update = true;
 								ringsort = <Ring::SortType>((ringsort+1)%Ring::NUM_SORTTYPE);								
 								Ring::loadRingArray(ringbuf, ringsort, ringascending, ring_eq_only);
 								for(num_rings_owned = 0; ringbuf[num_rings_owned] != -1; ++num_rings_owned);
@@ -438,20 +693,14 @@ dmapdata script ActiveSubscreen
 							else if(Input->Press[CB_RIGHT])
 							{
 								oldCursor[oldCursorIndex++] = cursor_index;
-								cursor_index = 4;
+								cursor_index = INDX_RING1;
 							}
 							else if(Input->Press[CB_UP])
-								cursor_index = 2;
+								cursor_index = INDX_ASCENDING;
 							else if(Input->Press[CB_DOWN])
-								cursor_index = 1;
+								cursor_index = INDX_EQUIPPED;
 							break;
-						case 4:
-						case 5:
-						case 6:
-						case 7:
-						case 8:
-						case 9:
-						case 10:
+						default:
 							if(Input->Press[CB_B])
 							{
 								cursor_index = oldCursor[--oldCursorIndex];
@@ -459,11 +708,11 @@ dmapdata script ActiveSubscreen
 							}
 							else if(Input->Press[CB_UP])
 							{
-								if(cursor_index == 4)
+								if(cursor_index == INDX_RING1)
 								{
 									--ring_page;
 									if(ring_page < 0) ring_page = max_page;
-									cursor_index = 10;
+									cursor_index = INDX_RING7;
 									selected_ring_indx = (cursor_index > 3 ? (ring_page*RINGS_PER_PAGE) + (cursor_index-4) : -1);
 									while(selected_ring_indx >= num_rings_owned)
 									{
@@ -475,11 +724,11 @@ dmapdata script ActiveSubscreen
 							}
 							else if(Input->Press[CB_DOWN])
 							{
-								if(cursor_index == 10 || (selected_ring_indx+1 == num_rings_owned))
+								if(cursor_index == INDX_RING7 || (selected_ring_indx+1 == num_rings_owned))
 								{
 									++ring_page;
 									if(ring_page > max_page) ring_page = 0;
-									cursor_index = 4;
+									cursor_index = INDX_RING1;
 								}
 								else ++cursor_index;
 							}
@@ -527,7 +776,46 @@ dmapdata script ActiveSubscreen
 							subbmp->FastTile(3, BX_RINGS + BW_RINGS + 1, BY_RINGS, RING_L_TILE, 0, OP_OPAQUE);
 							subbmp->FastTile(3, BX_RINGS + BW_RINGS + 1, BY_RINGS + BH_RINGS - 16, RING_R_TILE, 0, OP_OPAQUE);
 							break;
+					} //end
+					if(update || cursor_index != o_cindex || o_ring_page != ring_page)
+					{
+						selected_ring_indx = (cursor_index > 3 ? (ring_page*RINGS_PER_PAGE) + (cursor_index-4) : -1);
+						Ring selected_ring = <Ring>(selected_ring_indx < 0 ? -1 : ringbuf[selected_ring_indx]);
+						descScroll = 0;
+						remchr(descBuf, 0);
+						desc_tile = 0;
+						switch(cursor_index) //start
+						{
+							case INDX_TITLE: break;
+							case INDX_EQUIPPED:
+								if(ring_eq_only)
+									strcpy(descBuf, "Only show equipped rings");
+								else strcpy(descBuf, "Show all rings");
+								break;
+							case INDX_ASCENDING:
+							case INDX_SORT:
+								if(ringsort == Ring::SORTTYPE_ID)
+								{
+									if(ringascending)
+										strcpy(descBuf, "The lowest ring ID is shown first");
+									else
+										strcpy(descBuf, "The highest ring ID is shown first");
+								}
+								else if(ringascending)
+									strcpy(descBuf, "The lowest RP cost is shown first");
+								else
+									strcpy(descBuf, "The highest RP cost is shown first");
+								break;
+							default:
+								if(selected_ring > -1)
+								{
+									Ring::description(descBuf, selected_ring);
+									desc_tile = Ring::tile(selected_ring);
+								}
+								break;
+						} //end
 					}
+					descScroll = DrawDescription(subbmp, descBuf, descScroll, desc_tile);
 					DrawMenuCursor(subbmp, RingTabPos[cursor_index*2], RingTabPos[(cursor_index*2)+1]);
 					//
 					DrawBox(subbmp, BX_RINGS, BY_RINGS, BW_RINGS, BH_RINGS);
@@ -593,12 +881,40 @@ dmapdata script ActiveSubscreen
 				} //end
 				case TAB_MAP: //start
 				{
+					int o_cindex = cursor_index;
+					switch(cursor_index) //start
+					{
+						case 0:
+							break;
+					} //end
+					if(cursor_index != o_cindex)
+					{
+						descScroll = 0;
+						remchr(descBuf, 0);
+						desc_tile = 0;
+						
+					}
+					descScroll = DrawDescription(subbmp, descBuf, descScroll, desc_tile);
 					DrawMenuCursor(subbmp, MapTabPos[cursor_index*2], MapTabPos[(cursor_index*2)+1]);
 					//TODO Per-frame draws for this tab
 					break;
 				} //end
 				case TAB_JOURNAL: //start
 				{
+					int o_cindex = cursor_index;
+					switch(cursor_index) //start
+					{
+						case 0:
+							break;
+					} //end
+					if(cursor_index != o_cindex)
+					{
+						descScroll = 0;
+						remchr(descBuf, 0);
+						desc_tile = 0;
+						
+					}
+					descScroll = DrawDescription(subbmp, descBuf, descScroll, desc_tile);
 					DrawMenuCursor(subbmp, NotesTabPos[cursor_index*2], NotesTabPos[(cursor_index*2)+1]);
 					//TODO Per-frame draws for this tab
 					break;
@@ -765,11 +1081,11 @@ dmapdata script ActiveSubscreen
 		if(tab>=NUM_TABS) tab%=NUM_TABS;
 		return <Tab>tab;
 	}
-	void DrawBox(bitmap b, int x, int y, int pwid, int phei)
+	void DrawBox(bitmap b, int x, int y, int pwid, int phei) //start
 	{
 		DrawBox(b, x, y, pwid, phei, SBG_BOX_CLIGHT, SBG_BOX_CDARK);
-	}
-	void DrawBox(bitmap b, int x, int y, int pwid, int phei, Color light, Color dark)
+	} //end
+	void DrawBox(bitmap b, int x, int y, int pwid, int phei, Color light, Color dark) //start
 	{
 		bitmap temp = bitmaps::acquire(pwid, phei);
 		temp->ClearToColor(0, dark);
@@ -781,7 +1097,7 @@ dmapdata script ActiveSubscreen
 		temp->Triangle(0, 0, phei, 0, phei-(SBG_BOX_BORDER_PX*2), (SBG_BOX_BORDER_PX*2), phei, 0, 0, 0, 0, 0, PT_FLAT, NULL);
 		temp->Blit(0, b, 0, 0, pwid, phei, x, y, pwid, phei, 0, 0, 0, BITDX_NORMAL, 0, true);
 		bitmaps::release(temp);
-	}
+	} //end
 	int DrawNumber(bitmap b, int x, int y, int num, int mindigits, bool blank_0) //start Draws a number with tiles
 	{
 		int d6 = Div(num,100000),
@@ -858,5 +1174,25 @@ dmapdata script ActiveSubscreen
 		x-= MENUCURSOR_WID;
 		y-= MENUCURSOR_HEI/2;
 		b->FastCombo(7, x, y, COMBO_MENU_CURSOR, 0, OP_OPAQUE);
+	} //end
+	int DrawDescription(bitmap bmp, char str, int scroll, int tile) //start
+	{
+		unless(str[0]) return 0;
+		DrawBox(bmp, DESCBOX_X, DESCBOX_Y, DESCBOX_W, DESCBOX_H, DESCBOX_L, DESCBOX_D);
+		DEFINE TEXTWID = tile ? DESCBOX_W - (DESCBOX_TEXT_PADDING*2) - 18 : DESCBOX_W - (DESCBOX_TEXT_PADDING*2);
+		DEFINE DISPLAY_HEIGHT = Text->FontHeight(DESCBOX_FONT)*2 + DESCBOX_LINE_SPACING;
+		bitmap temp = bitmaps::acquire(TEXTWID, (Text->FontHeight(DESCBOX_FONT) + DESCBOX_LINE_SPACING) * 16);
+		temp->Clear(0);
+		int lines = Venrob::DrawStringsBitmap(temp, 0, 0, 0, DESCBOX_FONT, C_BLACK, -1, TF_NORMAL, str, OP_OPAQUE, DESCBOX_LINE_SPACING, TEXTWID);
+		int maxscroll = (lines - (DESCBOX_VISIBLE_LINES-1));
+		if(maxscroll>1) bmp->FastTile(5, DESCBOX_X + DESCBOX_W - 12, DESCBOX_Y + DESCBOX_H - 12, DESCBOX_ADVANCE_TILE, 0, OP_OPAQUE);
+		if(Input->Press[CB_A])
+		{
+			scroll = maxscroll > 0 ? (scroll+1)%maxscroll : 0;
+		}
+		temp->Blit(4, bmp, 0, scroll * (Text->FontHeight(DESCBOX_FONT) + DESCBOX_LINE_SPACING), TEXTWID, DISPLAY_HEIGHT, (tile ? 18 : 0) + DESCBOX_X + DESCBOX_TEXT_PADDING, DESCBOX_Y + DESCBOX_TEXT_PADDING, TEXTWID, DISPLAY_HEIGHT, 0, 0, 0, BITDX_NORMAL, 0, true);
+		if(tile) bmp->FastTile(4, DESCBOX_X + DESCBOX_TEXT_PADDING, DESCBOX_Y + DESCBOX_TEXT_PADDING, tile, 0, OP_OPAQUE);
+		bitmaps::release(temp, 7);
+		return scroll;
 	} //end
 }
