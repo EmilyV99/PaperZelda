@@ -116,7 +116,7 @@ namespace Ring //start
 			case ARMOR_RING:
 				strcpy(buf, "Armor Ring");
 				return;
-			case ARMOR_RING_P: 
+			case ARMOR_RING_P:
 				strcpy(buf, "Armor Ring (P)");
 				return;
 			case POWER_RING:
@@ -131,6 +131,61 @@ namespace Ring //start
 			default:
 				if(RING_DEBUG) Debug::err("Ring %d has no valid name!",r);
 				sprintf(buf, "RING_%d", r);
+				return;
+		}
+	} //end
+	void description(char buf, Ring r) //start
+	{
+		switch(r)
+		{
+			case RED_RING:
+				strcpy(buf, "+1 Attack");
+				return;
+			case RED_RING_P:
+				strcpy(buf, "+1 Attack (Partner)");
+				return;
+			case BLUE_RING:
+				strcpy(buf, "+1 Defense");
+				return;
+			case BLUE_RING_P:
+				strcpy(buf, "+1 Defense (Partner)");
+				return;
+			case GREEN_RING:
+				strcpy(buf, "-1 MP cost (all moves)");
+				return;
+			case GREEN_RING_P:
+				strcpy(buf, "-1 MP cost (all moves) (Partner)");
+				return;
+			case SWORD_RING:
+				strcpy(buf, "+1 sword damage\n-1 bow damage");
+				return;
+			case BOW_RING:
+				strcpy(buf, "+1 bow damage\n-1 sword damage");
+				return;
+			case PERIL_RING:
+				strcpy(buf, "+2 Defense (when in Danger)");
+				return;
+			case PERIL_RING_P:
+				strcpy(buf, "+2 Defense (Partner) (when in Danger)");
+				return;
+			case ARMOR_RING:
+				strcpy(buf, "+1 Defense\n-1 Attack");
+				return;
+			case ARMOR_RING_P:
+				strcpy(buf, "+1 Defense (Partner)\n-1 Attack (Partner)");
+				return;
+			case POWER_RING:
+				strcpy(buf, "+1 Attack\n-1 Defense");
+				return;
+			case POWER_RING_P:
+				strcpy(buf, "+1 Attack (Partner)\n-1 Defense	 (Partner)");
+				return;
+			case CURSED_RING:
+				strcpy(buf, "+2 Attack\nTake 5 damage at the end of your turn");
+				return;
+			default:
+				if(RING_DEBUG) Debug::err("Ring %d has no valid description!",r);
+				sprintf(buf, "UNDEFINED_RING %d", r);
 				return;
 		}
 	} //end
