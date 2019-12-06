@@ -13,17 +13,19 @@ global script Init
 		Game->MCounter[CR_FORCE_POINTS] = 200;
 		Game->MCounter[CR_LEVEL] = 99;
 		Game->Counter[CR_LEVEL] = 1;
-		Game->MCounter[CR_LIFE] = 5;
+		Game->MCounter[CR_LIFE] = 10;
 		Game->MCounter[CR_MAGIC] = 5;
+		Game->MCounter[CR_RING_POINTS] = 3;
 		Game->Counter[CR_LIFE] = Game->MCounter[CR_LIFE];
 		Game->Counter[CR_MAGIC] = Game->MCounter[CR_MAGIC];
-		//start TODO Remove this; this should begin at 0!
+		Game->Counter[CR_RING_POINTS] = Game->MCounter[CR_RING_POINTS];
+		Item::init();
+		Partner::init();
+		//start TODO Remove this
 		Game->MCounter[CR_FORCE_POWER] = 8;
 		Game->Counter[CR_FORCE_POWER] = 7;
 		Game->MCounter[CR_RING_POINTS] = 100;
 		Game->Counter[CR_RING_POINTS] = 100;
-		//end
-		//TODO REMOVE TESTS
 		for(int q = 0; q < Ring::NUM_RINGS; ++q)
 		{
 			if(Ring::tile(<Ring>q) != Ring::RING_NULL_TILE)
@@ -31,7 +33,7 @@ global script Init
 				ringinv[q] = 5;
 			}
 		}
-		//
+		//end tests
 	}
 }
 

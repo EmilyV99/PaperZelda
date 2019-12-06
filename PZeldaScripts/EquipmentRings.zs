@@ -35,22 +35,22 @@ namespace Ring //start
 		POWER_RING_P,
 		ARMOR_RING,
 		ARMOR_RING_P,
-		HEARTFUL_BLOW,
-		HEARTFUL_BLOW_P,
-		MAGIC_BLOW,
-		MAGIC_BLOW_P,
+		LEECH_RING,
+		LEECH_RING_P,
+		SIPHON_RING,
+		SIPHON_RING_P,
 		CURSED_RING,
 		CHARGE_RING,
 		CHARGE_RING_P,
 		ICE_RING,
 		FIRE_RING,
-		HOLY_RING,
+		LIGHT_RING,
 		DARK_RING,
 		SHIELD_RING_P,
-		CLOSE_CALL,
-		CLOSE_CALL_P,
-		FEELING_FINE,
-		FEELING_FINE_P,
+		CLUTCH_RING,
+		CLUTCH_RING_P,
+		RESIST_RING,
+		RESIST_RING_P,
 		GREEN_RING,
 		GREEN_RING_P,
 		PEGASUS_RING,
@@ -59,9 +59,9 @@ namespace Ring //start
 		ELECTRIC_RING,
 		EARTH_RING,
 		WEALTH_RING,
-		HEART_JOY_RING,
-		MAGIC_JOY_RING,
-		SCAVENGER_RING,
+		JOY_RING,
+		SALVAGE_RING,
+		SCAVENGE_RING,
 		VICTORY_RING,
 		BOMBPROOF_RING,
 		SPIN_RING,
@@ -75,6 +75,10 @@ namespace Ring //start
 		EQUIP_RING,
 		SWAP_RING,
 		COUNTER_RING,
+		LUCK_RING,
+		LUCK_RING_P,
+		DODGE_RING,
+		DODGE_RING_P,
 		NUM_RINGS
 	}; //end
 	CONFIGB RING_DEBUG = false;
@@ -128,6 +132,72 @@ namespace Ring //start
 			case CURSED_RING:
 				strcpy(buf, "Cursed Ring");
 				return;
+			case LUCK_RING:
+				strcpy(buf, "Luck Ring");
+				return;
+			case LUCK_RING_P:
+				strcpy(buf, "Luck Ring (P)");
+				return;
+			case CLUTCH_RING:
+				strcpy(buf, "Clutch Ring");
+				return;
+			case CLUTCH_RING_P:
+				strcpy(buf, "Clutch Ring (P)");
+				return;
+			case DODGE_RING:
+				strcpy(buf, "Dodge Ring");
+				return;
+			case DODGE_RING_P:
+				strcpy(buf, "Dodge Ring (P)");
+				return;
+			case FIRE_RING:
+				strcpy(buf, "Fire Ring");
+				return;
+			case ICE_RING:
+				strcpy(buf, "Ice Ring");
+				return;
+			case EARTH_RING:
+				strcpy(buf, "Earth Ring");
+				return;
+			case ELECTRIC_RING:
+				strcpy(buf, "Electric Ring");
+				return;
+			case LIGHT_RING:
+				strcpy(buf, "Light Ring");
+				return;
+			case DARK_RING:
+				strcpy(buf, "Dark Ring");
+				return;
+			case HEART_RING:
+				strcpy(buf, "Heart Ring");
+				return;
+			case HEART_RING_P:
+				strcpy(buf, "Heart Ring (P)");
+				return;
+			case MAGIC_RING:
+				strcpy(buf, "Magic Ring");
+				return;
+			case LEECH_RING:
+				strcpy(buf, "Leech Ring");
+				return;
+			case LEECH_RING_P:
+				strcpy(buf, "Leech Ring (P)");
+				return;
+			case SIPHON_RING:
+				strcpy(buf, "Siphon Ring");
+				return;
+			case SIPHON_RING_P:
+				strcpy(buf, "Siphon Ring (P)");
+				return;
+			case SHIELD_RING_P:
+				strcpy(buf, "Shield Ring (P)");
+				return;
+			case RESIST_RING:
+				strcpy(buf, "Resist Ring");
+				return;
+			case RESIST_RING_P:
+				strcpy(buf, "Resist Ring (P)");
+				return;
 			default:
 				if(RING_DEBUG) Debug::err("Ring %d has no valid name!",r);
 				sprintf(buf, "RING_%d", r);
@@ -178,10 +248,76 @@ namespace Ring //start
 				strcpy(buf, "+1 Attack\n-1 Defense");
 				return;
 			case POWER_RING_P:
-				strcpy(buf, "+1 Attack (Partner)\n-1 Defense	 (Partner)");
+				strcpy(buf, "+1 Attack (Partner)\n-1 Defense (Partner)");
 				return;
 			case CURSED_RING:
 				strcpy(buf, "+2 Attack\nTake 5 damage at the end of your turn");
+				return;
+			case LUCK_RING:
+				strcpy(buf, "+10% Avo");
+				return;
+			case LUCK_RING_P:
+				strcpy(buf, "+10% Avo (Partner)");
+				return;
+			case CLUTCH_RING:
+				strcpy(buf, "+20% Avo when in Danger");
+				return;
+			case CLUTCH_RING_P:
+				strcpy(buf, "+20% Avo when in Danger (Partner)");
+				return;
+			case DODGE_RING:
+				strcpy(buf, "+20% Avo");
+				return;
+			case DODGE_RING_P:
+				strcpy(buf, "+20% Avo (Partner)");
+				return;
+			case FIRE_RING:
+				strcpy(buf, "+1 Def vs Fire; +1 Atk with Fire; +1 Dmg vs Ice");
+				return;
+			case ICE_RING:
+				strcpy(buf, "+1 Def vs Ice; +1 Atk with Ice; +1 Dmg vs Fire");
+				return;
+			case EARTH_RING:
+				strcpy(buf, "+1 Def vs Earth; +1 Atk with Earth; +1 Dmg vs Electric");
+				return;
+			case ELECTRIC_RING:
+				strcpy(buf, "+1 Def vs Electric; +1 Atk with Electric; +1 Dmg vs Earth");
+				return;
+			case LIGHT_RING:
+				strcpy(buf, "+1 Def vs Light; +1 Atk with Light; +1 Dmg vs Dark");
+				return;
+			case DARK_RING:
+				strcpy(buf, "+1 Def vs Dark; +1 Atk with Dark; +1 Dmg vs Light");
+				return;
+			case HEART_RING:
+				strcpy(buf, "Regenerate 1 HP per turn");
+				return;
+			case HEART_RING_P:
+				strcpy(buf, "Regenerate 1 HP per turn (Partner)");
+				return;
+			case MAGIC_RING:
+				strcpy(buf, "Regenerate 1 MP per turn");
+				return;
+			case LEECH_RING:
+				strcpy(buf, "Recover 1 HP per attack\n-1 Atk");
+				return;
+			case LEECH_RING_P:
+				strcpy(buf, "Recover 1 HP per attack\n-1 Atk (Partner)");
+				return;
+			case SIPHON_RING:
+				strcpy(buf, "Recover 1 MP per attack\n-1 Atk");
+				return;
+			case SIPHON_RING_P:
+				strcpy(buf, "Recover 1 MP per attack\n-1 Atk (Partner)");
+				return;
+			case SHIELD_RING_P:
+				strcpy(buf, "Extra -1 Dmg taken when guarding (Partner)");
+				return;
+			case RESIST_RING:
+				strcpy(buf, "Grants status immunity");
+				return;
+			case RESIST_RING_P:
+				strcpy(buf, "Grants status immunity (Partner)");
 				return;
 			default:
 				if(RING_DEBUG) Debug::err("Ring %d has no valid description!",r);
@@ -224,6 +360,50 @@ namespace Ring //start
 			case CURSED_RING:
 				return 202980;
 			//CURSED_RING_P does not exist, but has tile 202981
+			case LUCK_RING:
+				return 203000;
+			case LUCK_RING_P:
+				return 203001;
+			case CLUTCH_RING:
+				return 203020;
+			case CLUTCH_RING_P:
+				return 203021;
+			case DODGE_RING:
+				return 203040;
+			case DODGE_RING_P:
+				return 203041;
+			case FIRE_RING:
+				return 202825;
+			case ICE_RING:
+				return 202845;
+			case EARTH_RING:
+				return 202865;
+			case ELECTRIC_RING:
+				return 202885;
+			case LIGHT_RING:
+				return 202905;
+			case DARK_RING:
+				return 202925;
+			case HEART_RING:
+				return 202945;
+			case HEART_RING_P:
+				return 202946;
+			case MAGIC_RING:
+				return 202965;
+			case LEECH_RING:
+				return 202985;
+			case LEECH_RING_P:
+				return 202986;
+			case SIPHON_RING:
+				return 203005;
+			case SIPHON_RING_P:
+				return 203006;
+			case SHIELD_RING_P:
+				return 203026;
+			case RESIST_RING:
+				return 203045;
+			case RESIST_RING_P:
+				return 203046;
 			//TODO fill out rings
 			default:
 				if(RING_DEBUG) Debug::err("Ring %d has no valid tile!",r);
@@ -264,6 +444,112 @@ namespace Ring //start
 				return 2;
 			case CURSED_RING:
 				return 4;
+			case LUCK_RING:
+				return 2;
+			case LUCK_RING_P:
+				return 2;
+			case CLUTCH_RING:
+				return 1;
+			case CLUTCH_RING_P:
+				return 1;
+			case DODGE_RING:
+				return 4;
+			case DODGE_RING_P:
+				return 4;
+			case FIRE_RING:
+				return 1;
+			case ICE_RING:
+				return 1;
+			case EARTH_RING:
+				return 1;
+			case ELECTRIC_RING:
+				return 1;
+			case LIGHT_RING:
+				return 1;
+			case DARK_RING:
+				return 1;
+			case HEART_RING:
+				return 2;
+			case HEART_RING_P:
+				return 2;
+			case MAGIC_RING:
+				return 2;
+			case LEECH_RING:
+				return 1;
+			case LEECH_RING_P:
+				return 1;
+			case SIPHON_RING:
+				return 1;
+			case SIPHON_RING_P:
+				return 1;
+			case SHIELD_RING_P:
+				return 2;
+			case RESIST_RING:
+				return 4;
+			case RESIST_RING_P:
+				return 4;
+			//TODO fill out rings
+			default:
+				if(RING_DEBUG) Debug::err("Ring %d has no valid cost!",r);
+				return NULL;
+		}
+	} //end
+	int max(Ring r) //start	
+	{
+		switch(r)
+		{
+			case RED_RING:
+			case RED_RING_P:
+			case BLUE_RING:
+			case BLUE_RING_P:
+			case GREEN_RING:
+			case GREEN_RING_P:
+			case SWORD_RING:
+			case BOW_RING:
+			case PERIL_RING:
+			case PERIL_RING_P:
+			case ARMOR_RING:
+			case ARMOR_RING_P: 
+			case POWER_RING:
+			case POWER_RING_P:
+			case CURSED_RING:
+			case HEART_RING:
+			case HEART_RING_P:
+			case MAGIC_RING:
+			case LEECH_RING:
+			case LEECH_RING_P:
+			case SIPHON_RING:
+			case SIPHON_RING_P:
+			case SHIELD_RING_P:
+				return MAX_INT; //Stackable to no limit
+			case LUCK_RING:
+				return 1;
+			case LUCK_RING_P:
+				return 1;
+			case CLUTCH_RING:
+				return 1;
+			case CLUTCH_RING_P:
+				return 1;
+			case DODGE_RING:
+				return 1;
+			case DODGE_RING_P:
+				return 1;
+			case FIRE_RING:
+				return 1;
+			case ICE_RING:
+				return 1;
+			case EARTH_RING:
+				return 1;
+			case ELECTRIC_RING:
+				return 1;
+			case LIGHT_RING:
+				return 1;
+			case DARK_RING:
+				return 1;
+			case RESIST_RING:
+				return 1;
+			case RESIST_RING_P:
+				return 1;
 			//TODO fill out rings
 			default:
 				if(RING_DEBUG) Debug::err("Ring %d has no valid cost!",r);

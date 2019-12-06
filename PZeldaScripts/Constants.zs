@@ -61,6 +61,7 @@ DEFINE CR_FORCE_POWER = CR_SCRIPT6;
 //Tiles/combos
 CONFIG TILE_MOUSE_CURSOR = 211840;
 CONFIG TILE_FORCE_POWER = 208820;
+CONFIG TILE_INVIS = 20;
 //
 enum ITID
 {
@@ -70,9 +71,9 @@ enum ITID
 	NUM_ITID = 256
 };
 //
-/*untyped GameVars[NUM_GAMEVAR];
+untyped GameVars[NUM_GAMEVAR];
 enum GVar
 {
-	
+	CURR_PARTNER,
 	NUM_GAMEVAR
-};*/
+};

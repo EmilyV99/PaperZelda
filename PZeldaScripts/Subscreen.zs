@@ -152,6 +152,7 @@ dmapdata script ActiveSubscreen
 	COLOR RING_BUTTON_DCOLOR = C_DBLUE;
 	CONFIG RING_COMBO_LEFTARR = 65030;
 	CONFIG RING_COMBO_RIGHTARR = 65031;
+	CONFIG RING_COMBO_GRAY_RIGHTARR = 65032;
 	CONFIG RING_L_TILE = 211414;
 	CONFIG RING_R_TILE = 211415;
 	CONFIG RING_BUTTON_CTR_Y = BY_RINGS + BH_RINGS - RING_BUTTON_HEI - 1;
@@ -756,7 +757,7 @@ dmapdata script ActiveSubscreen
 							}
 							else if(Input->Press[CB_RIGHT])
 							{
-								if(ringinv[selected_ring] > rings[selected_ring])
+								if(Min(ringinv[selected_ring],Ring::max(selected_ring)) > rings[selected_ring])
 								{
 									if(Game->Counter[CR_RING_POINTS] >= Ring::cost(selected_ring))
 									{
@@ -868,8 +869,14 @@ dmapdata script ActiveSubscreen
 						{
 							if(rings[r] > 0)
 								subbmp->FastCombo(1, BX_RINGS + RING_EQ_X, y + RING_TEXT_YOFF, RING_COMBO_LEFTARR, 0, OP_OPAQUE);
-							if(rings[r] < ringinv[r] && Game->Counter[CR_RING_POINTS] >= Ring::cost(r))
+							if(rings[r] >= Ring::max(r))
+							{
+								subbmp->FastCombo(1, BX_RINGS + RING_EQ_X + 6 + 2 + Text->StringWidth(buf3, MENU_SMALLFONT), y + RING_TEXT_YOFF, RING_COMBO_GRAY_RIGHTARR, 0, OP_OPAQUE);
+							}
+							else if(rings[r] < ringinv[r] && Game->Counter[CR_RING_POINTS] >= Ring::cost(r))
+							{
 								subbmp->FastCombo(1, BX_RINGS + RING_EQ_X + 6 + 2 + Text->StringWidth(buf3, MENU_SMALLFONT), y + RING_TEXT_YOFF, RING_COMBO_RIGHTARR, 0, OP_OPAQUE);
+							}
 						}
 						if(rings[r])
 						{
